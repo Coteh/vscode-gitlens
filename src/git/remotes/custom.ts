@@ -1,6 +1,7 @@
 import type { Range, Uri } from 'vscode';
 import type { RemotesUrlsConfig } from '../../config';
 import type { GkProviderId } from '../../gk/models/repositoryIdentities';
+import { Logger } from '../../system/logger';
 import { getTokensFromTemplate, interpolate } from '../../system/string';
 import type { Repository } from '../models/repository';
 import type { RemoteProviderId } from './remoteProvider';
@@ -112,8 +113,12 @@ export class CustomRemote extends RemoteProvider {
 			repo: this.path,
 			repoBase: repoBase,
 			repoPath: repoPath,
+			project: repoPath.split("/")[0],
+			repoName: repoPath.split("/")[1],
 			...additionalContext,
 		};
+
+		Logger.log("teh context", context);
 
 		for (const [key, value] of Object.entries(context)) {
 			context[`${key}_encoded`] = encodeURIComponent(value);
